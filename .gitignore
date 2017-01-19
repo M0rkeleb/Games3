@@ -214,3 +214,6 @@ ModelManifest.xml
 *.opendb
 *.vcxproj
 *.filters
+ConnectFour/stdafx.cpp
+ConnectFour/targetver.h
+ConnectFour/stdafx.h
