@@ -59,3 +59,18 @@ protected:
 
 };
 
+class RectGame
+{
+public:
+	RectGame();
+	~RectGame();
+	bool checkEnding();
+	std::string playerFromIdent(char ident);
+	virtual void playTurn() = 0;
+	char nextPlacedIdent();
+	void playGame();
+protected:
+	RectGameBoard* m_board;
+	std::vector<GamePlayer> m_playerNameList;
+};
+
