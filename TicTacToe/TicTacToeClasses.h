@@ -14,20 +14,13 @@ private:
 
 };
 
-class TicTacToeGame
+class TicTacToeGame : public RectGame
 {
 public:
-	TicTacToeGame(std::size_t dimension = 3);
-	~TicTacToeGame();
-	bool checkEnding();
-	std::string playerFromIdent(char ident);
-	void playTurn();
-	char nextPlacedIdent();
-	void playGame();
-	bool validLocInput(std::size_t userInput) { return (userInput >= 1 && userInput <= (*(m_board)).size()); }
+	TicTacToeGame(std::size_t dimension = 3) { m_board = new TicTacToeBoard(dimension); }
+	void playTurn() override;
+	bool validLocInput(std::size_t userInput) { return (userInput >= 1 && userInput <= static_cast<TicTacToeBoard*>(m_board)->size()); }
 private:
-	TicTacToeBoard* m_board;
-	std::vector<GamePlayer> m_playerNameList;
 
 };
 
