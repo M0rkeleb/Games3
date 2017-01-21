@@ -3,27 +3,6 @@
 #include "gameutils.h"
 #include <iostream>
 
-ConnectFourBoard::ConnectFourBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), lastPlacedRow(height), lastPlacedCol(width)
-{
-	boardContents.resize(height);
-	for (auto &e : boardContents)
-	{
-		e.resize(width);
-		for (auto &f : e)
-			f = '_';
-	}
-}
-
-void ConnectFourBoard::placeInSquare(std::size_t i, std::size_t j, char placed)
-{
-	if ((placed == 'X' || placed == 'O') && i < m_height && j < m_width)
-	{
-		boardContents[i][j] = placed;
-		lastPlacedRow = i;
-		lastPlacedCol = j;
-	}
-}
-
 void ConnectFourBoard::placeInColumn(std::size_t j, char placed)
 {
 	for (std::size_t i_plus = m_height; i_plus > 0; i_plus--)
@@ -88,16 +67,6 @@ bool ConnectFourBoard::gameTied()
 	}
 	//going to assume victoryReached will be checked first, so a full board is always tied.
 	return true;
-}
-
-std::ostream & operator<<(std::ostream & out, const ConnectFourBoard & tttBoard)
-{
-	for (auto e : tttBoard.boardContents)
-	{
-		for (auto f : e) { out << f << " "; }
-		out << std::endl;
-	}
-	return out;
 }
 
 ConnectFourGame::ConnectFourGame(std::size_t width, std::size_t height)

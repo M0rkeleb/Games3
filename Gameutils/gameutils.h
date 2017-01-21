@@ -35,18 +35,27 @@ T getInput(std::istream &inRead, std::ostream &outRead, std::string prompt, T &u
 	}
 }
 
-class GameBoard
+class RectGameBoard
 {
 public:
-	GameBoard()
+	RectGameBoard(std::size_t width, std::size_t height);
+	void placeInSquare(std::size_t i, std::size_t j, char placed);
+	char getFromSquare(size_t i, size_t j)
 	{
+		if (i < m_height && j < m_width) { return boardContents[i][j]; } return '_';
 	}
+	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
+	virtual bool victoryReached() = 0;
+	virtual bool gameTied() = 0;
+	char currPlayer() { return getFromSquare(lastPlacedRow, lastPlacedCol); }
+	bool noPlaysYet() { return (lastPlacedRow == m_height || lastPlacedCol == m_width); }
+	std::size_t width() { return m_width; }
+	std::size_t height() { return m_height; }
 
-	~GameBoard()
-	{
-	}
-
-private:
+protected:
+	const std::size_t m_width, m_height;
+	std::vector<std::vector<char>> boardContents;
+	std::size_t lastPlacedRow, lastPlacedCol;
 
 };
 
