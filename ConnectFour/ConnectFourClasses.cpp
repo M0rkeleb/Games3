@@ -3,27 +3,6 @@
 #include "gameutils.h"
 #include <iostream>
 
-ConnectFourBoard::ConnectFourBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), lastPlacedRow(height), lastPlacedCol(width)
-{
-	boardContents.resize(height);
-	for (auto &e : boardContents)
-	{
-		e.resize(width);
-		for (auto &f : e)
-			f = '_';
-	}
-}
-
-void ConnectFourBoard::placeInSquare(std::size_t i, std::size_t j, char placed)
-{
-	if ((placed == 'X' || placed == 'O') && i < m_height && j < m_width)
-	{
-		boardContents[i][j] = placed;
-		lastPlacedRow = i;
-		lastPlacedCol = j;
-	}
-}
-
 void ConnectFourBoard::placeInColumn(std::size_t j, char placed)
 {
 	for (std::size_t i_plus = m_height; i_plus > 0; i_plus--)
@@ -90,53 +69,6 @@ bool ConnectFourBoard::gameTied()
 	return true;
 }
 
-std::ostream & operator<<(std::ostream & out, const ConnectFourBoard & tttBoard)
-{
-	for (auto e : tttBoard.boardContents)
-	{
-		for (auto f : e) { out << f << " "; }
-		out << std::endl;
-	}
-	return out;
-}
-
-ConnectFourGame::ConnectFourGame(std::size_t width, std::size_t height)
-{
-	m_playerNameList.resize(2);
-	m_board = new ConnectFourBoard(width, height);
-	char tttIdents[2]{ 'X','O' };
-	initPlayerList(m_playerNameList, std::cin, std::cout, tttIdents);
-}
-
-ConnectFourGame::~ConnectFourGame()
-{
-	delete m_board;
-}
-
-bool ConnectFourGame::checkEnding()
-{
-	//Check if the game is over and print result.
-	//First check for a win.
-	if (m_board->victoryReached())
-	{
-		std::cout << "Game is won by " << playerFromIdent(m_board->currPlayer()) << "." << std::endl;
-		return true;
-	}
-	//Check for a tie.
-	if (m_board->gameTied())
-	{
-		std::cout << "Game ends in a tie." << std::endl;
-		return true;
-	}
-	return false;
-}
-
-std::string ConnectFourGame::playerFromIdent(char ident)
-{
-	for (auto e : m_playerNameList) if (ident == e.playerIdentShort) return e.playerName;
-	return std::string();
-}
-
 void ConnectFourGame::playTurn()
 {
 	std::size_t playCol;
@@ -144,23 +76,10 @@ void ConnectFourGame::playTurn()
 	{
 		std::cout << playerFromIdent(nextPlacedIdent()) << ", choose a column to place an " << nextPlacedIdent() << " in." << std::endl;
 		playCol = getInput(std::cin, std::cout, "Choose a column. ", playCol, &ConnectFourGame::validLocInput, this);
-		if (!(m_board->columnFull(playCol - 1))) { m_board->placeInColumn(playCol - 1, nextPlacedIdent()); return; }
+		if (!(static_cast<ConnectFourBoard*>(m_board)->columnFull(playCol - 1))) 
+		{ 
+			static_cast<ConnectFourBoard*>(m_board)->placeInColumn(playCol - 1, nextPlacedIdent()); return; 
+		}
 		std::cout << "That column is already full. You cannot place there." << std::endl;
 	}
-}
-
-char ConnectFourGame::nextPlacedIdent()
-{
-	if ((*m_board).noPlaysYet()) { return 'X'; }
-	if ((*m_board).currPlayer() == 'X') { return 'O'; }
-	return 'X';
-}
-
-void ConnectFourGame::playGame()
-{
-	do {
-		std::cout << (*m_board);
-		playTurn();
-	} while (!checkEnding());
-	std::cout << (*m_board);
 }
