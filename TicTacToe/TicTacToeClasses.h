@@ -2,25 +2,15 @@
 #include <string>
 #include "gameutils.h"
 
-class TicTacToeBoard
+class TicTacToeBoard : public RectGameBoard
 {
 public:
-	TicTacToeBoard(std::size_t dimension = 3);
-	void placeInSquare(std::size_t i, std::size_t j, char placed);
-	char getFromSquare(size_t i, size_t j)
-	{
-		if (i < m_dimension && j < m_dimension) { return boardContents[i][j]; } return '_';
-	}
-	friend std::ostream& operator<< (std::ostream &out, const TicTacToeBoard &tttBoard);
+	TicTacToeBoard(std::size_t dimension = 3) : RectGameBoard(dimension, dimension), m_dimension(dimension) {}
 	bool victoryReached();
 	bool gameTied();
-	char currPlayer() { return getFromSquare(lastPlacedRow, lastPlacedCol); }
-	bool noPlaysYet() { return (lastPlacedRow == m_dimension || lastPlacedCol == m_dimension); }
 	std::size_t size() { return m_dimension; }
 private:
 	const std::size_t m_dimension;
-	std::vector<std::vector<char>> boardContents;
-	std::size_t lastPlacedRow, lastPlacedCol;
 
 };
 
