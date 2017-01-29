@@ -21,14 +21,10 @@ void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, s
 	}
 }
 
-RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), lastPlacedRow(height), lastPlacedCol(width)
+RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), lastPlacedRow(height), lastPlacedCol(width), boardContents(boost::extents[height][width])
 {
-	boardContents.resize(height);
-	for (auto &e : boardContents)
-	{
-		e.resize(width);
-		for (auto &f : e)
-			f = '_';
+	for (auto &e : boardContents) {
+		for (auto &f : e) { f = '_'; }
 	}
 }
 

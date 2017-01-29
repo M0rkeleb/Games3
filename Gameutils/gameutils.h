@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <boost\multi_array.hpp>
 
 std::string getPlayerName(std::istream &inRead);
 
@@ -54,7 +55,7 @@ public:
 
 protected:
 	const std::size_t m_width, m_height;
-	std::vector<std::vector<char>> boardContents;
+	boost::multi_array<char, 2> boardContents;
 	std::size_t lastPlacedRow, lastPlacedCol;
 
 };
