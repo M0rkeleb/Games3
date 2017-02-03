@@ -1,6 +1,6 @@
+#include "gameutils.h"
 #include <string>
 #include <iostream>
-#include "gameutils.h"
 
 std::string getPlayerName(std::istream &inRead)
 {
@@ -21,8 +21,9 @@ void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, s
 	}
 }
 
-RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), lastPlacedRow(height), lastPlacedCol(width), boardContents(boost::extents[height][width])
+RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), lastPlacedRow(height), lastPlacedCol(width)//, boardContents(boost::multi_array<char, 2>{boost::extents[height][width]})
 {
+	boardContents.resize(boost::extents[height][width]);
 	for (auto &e : boardContents) {
 		for (auto &f : e) { f = '_'; }
 	}

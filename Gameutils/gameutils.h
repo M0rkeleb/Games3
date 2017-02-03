@@ -1,7 +1,7 @@
 #pragma once
+#include <boost\multi_array.hpp>
 #include <string>
 #include <vector>
-#include <boost\multi_array.hpp>
 
 std::string getPlayerName(std::istream &inRead);
 
