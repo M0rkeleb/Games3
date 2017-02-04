@@ -1,5 +1,6 @@
 #pragma once
 #include <boost\multi_array.hpp>
+#include <array_2d_iterator.hpp>
 #include <string>
 #include <vector>
 
@@ -46,19 +47,20 @@ public:
 		if (i < m_height && j < m_width) { return boardContents[i][j]; } return '_';
 	}
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
+	bool find_ina_row(std::size_t inarow);
 	virtual bool victoryReached() = 0;
 	virtual bool gameTied() = 0;
 	char currPlayer() { return getFromSquare(lastPlacedRow, lastPlacedCol); }
 	bool noPlaysYet() { return (lastPlacedRow == m_height || lastPlacedCol == m_width); }
 	std::size_t width() { return m_width; }
 	std::size_t height() { return m_height; }
-
 protected:
 	const std::size_t m_width, m_height;
 	boost::multi_array<char, 2> boardContents;
 	std::size_t lastPlacedRow, lastPlacedCol;
 
 };
+
 
 class RectGame
 {

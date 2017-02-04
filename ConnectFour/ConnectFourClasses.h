@@ -10,7 +10,7 @@ public:
 	ConnectFourBoard(std::size_t width = 7, std::size_t height = 6) : RectGameBoard(width, height) {}
 	void placeInColumn(std::size_t j, char placed);
 	bool columnFull(std::size_t j);
-	bool victoryReached() override;
+	bool victoryReached() override { return find_ina_row(4); }
 	bool gameTied() override;
 private:
 

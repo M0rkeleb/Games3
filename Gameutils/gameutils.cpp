@@ -21,9 +21,10 @@ void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, s
 	}
 }
 
-RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), lastPlacedRow(height), lastPlacedCol(width)//, boardContents(boost::multi_array<char, 2>{boost::extents[height][width]})
+RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), 
+                                                                     lastPlacedRow(height), lastPlacedCol(width), 
+	                                                                 boardContents(boost::multi_array<char, 2>{boost::extents[height][width]})
 {
-	boardContents.resize(boost::extents[height][width]);
 	for (auto &e : boardContents) {
 		for (auto &f : e) { f = '_'; }
 	}
@@ -39,14 +40,33 @@ void RectGameBoard::placeInSquare(std::size_t i, std::size_t j, char placed)
 	}
 }
 
-std::ostream & operator<<(std::ostream & out, const RectGameBoard & tttBoard)
+std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 {
-	for (auto e : tttBoard.boardContents)
+	for (auto e : rgBoard.boardContents)
 	{
 		for (auto f : e) { out << f << " "; }
 		out << std::endl;
 	}
 	return out;
+}
+
+bool RectGameBoard::find_ina_row(std::size_t inarow)
+{
+	std::vector<char> directions{ 'h','v','d','a' };
+	array_2d_iterator<char> the_begin = two_d_begin(boardContents);
+	array_2d_iterator<char> the_end = two_d_end(boardContents);
+	for (auto dir: directions)
+	{
+		array_2d_iterator<char> itf = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		array_2d_iterator<char> itr = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		for (std::size_t i = 0; i < std::max(m_height, m_width); i++)
+		{
+			if (itf != the_end && *itf == currPlayer()) { itf++; }
+			if (itr != the_begin && *itr == currPlayer()) { itr--; }
+		}
+		if ((*itf == currPlayer() ? 1 : 0) + (*itr == currPlayer() ? 1 : 0) + (itf - itr) >= inarow + 1) { return true; }
+	}
+	return false;
 }
 
 RectGame::RectGame()

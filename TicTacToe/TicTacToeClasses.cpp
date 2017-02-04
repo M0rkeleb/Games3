@@ -3,7 +3,7 @@
 #include "gameutils.h"
 #include <iostream>
 
-bool TicTacToeBoard::victoryReached()
+/*bool TicTacToeBoard::victoryReached()
 {
 	bool rowWin = true;
 	bool colWin = true;
@@ -17,7 +17,7 @@ bool TicTacToeBoard::victoryReached()
 		diagUpRightWin = diagUpRightWin && (getFromSquare(i, m_dimension - 1 - i) == currPlayer());
 	}
 	return rowWin || colWin || diagDownRightWin || diagUpRightWin;
-}
+}*/
 
 bool TicTacToeBoard::gameTied()
 {
