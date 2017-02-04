@@ -23,41 +23,6 @@ bool ConnectFourBoard::columnFull(std::size_t j)
 	return true;
 }
 
-bool ConnectFourBoard::victoryReached()
-{
-	int counts[3][3] = { { 0,0,0 },{ 0,0,0 },{ 0,0,0 } };
-	bool going[3][3] = { { true,true,true },{ true,false,true },{ true,true,true } };
-	std::size_t rowIndex[3][3] = { { lastPlacedRow,lastPlacedRow,lastPlacedRow },
-	{ lastPlacedRow,lastPlacedRow,lastPlacedRow },
-	{ lastPlacedRow,lastPlacedRow,lastPlacedRow } };
-	std::size_t colIndex[3][3] = { { lastPlacedCol,lastPlacedCol,lastPlacedCol },
-	{ lastPlacedCol,lastPlacedCol,lastPlacedCol },
-	{ lastPlacedCol,lastPlacedCol,lastPlacedCol } };
-	bool cont = true;
-	while (cont)
-	{
-		cont = false;
-		for (std::size_t i = 0; i < 3; i++)
-		{
-			for (std::size_t j = 0; j < 3; j++)
-			{
-				std::size_t nextRow = rowIndex[i][j] + i;
-				std::size_t nextCol = colIndex[i][j] + j;
-				if (nextRow <= 0 || nextRow > m_height || nextCol <= 0 || nextCol > m_width) { going[i][j] = false; }
-				else if (getFromSquare(--nextRow, --nextCol) != currPlayer()) { going[i][j] = false; }
-				else {
-					rowIndex[i][j] = nextRow;
-					colIndex[i][j] = nextCol;
-				}
-				cont = cont || going[i][j];
-			}
-		}
-	}
-	return (rowIndex[2][2] - rowIndex[0][0] >= 3 || rowIndex[2][1] - rowIndex[0][1] >= 3 || colIndex[0][2] - colIndex[2][0] >= 3 || colIndex[1][2] -
-
-		colIndex[1][0] >= 3);
-}
-
 bool ConnectFourBoard::gameTied()
 {
 	for (auto e : boardContents)

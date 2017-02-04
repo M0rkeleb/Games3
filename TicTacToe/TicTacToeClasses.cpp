@@ -3,22 +3,6 @@
 #include "gameutils.h"
 #include <iostream>
 
-bool TicTacToeBoard::victoryReached()
-{
-	bool rowWin = true;
-	bool colWin = true;
-	bool diagDownRightWin = (lastPlacedCol == lastPlacedRow);
-	bool diagUpRightWin = (lastPlacedCol + lastPlacedRow + 1 == m_dimension);
-	for (size_t i = 0; i < m_dimension; i++)
-	{
-		rowWin = rowWin && (getFromSquare(lastPlacedRow, i) == currPlayer());
-		colWin = colWin && (getFromSquare(i, lastPlacedCol) == currPlayer());
-		diagDownRightWin = diagDownRightWin && (getFromSquare(i, i) == currPlayer());
-		diagUpRightWin = diagUpRightWin && (getFromSquare(i, m_dimension - 1 - i) == currPlayer());
-	}
-	return rowWin || colWin || diagDownRightWin || diagUpRightWin;
-}
-
 bool TicTacToeBoard::gameTied()
 {
 	for (auto e : boardContents)
