@@ -64,7 +64,7 @@ bool RectGameBoard::find_ina_row(std::size_t inarow)
 			if (itf != the_end && *itf == currPlayer()) { itf++; }
 			if (itr != the_begin && *itr == currPlayer()) { itr--; }
 		}
-		if ((*itf == currPlayer() ? 1 : 0) + (*itr == currPlayer() ? 1 : 0) + (itf - itr) >= inarow + 1) { return true; }
+		if ((*itf == currPlayer() ? 1 : 0) + (*itr == currPlayer() ? 1 : 0) + (std::size_t)(itf - itr) >= inarow + 1) { return true; }
 	}
 	return false;
 }
