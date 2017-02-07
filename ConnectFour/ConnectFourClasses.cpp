@@ -5,7 +5,7 @@
 
 void ConnectFourBoard::placeInColumn(std::size_t j, char placed)
 {
-	for (std::size_t i_plus = m_height; i_plus > 0; i_plus--)
+	for (std::size_t i_plus = height(); i_plus > 0; i_plus--)
 	{
 		std::size_t i = i_plus - 1;
 		if (getFromSquare(i, j) == '_') { placeInSquare(i, j, placed); return; }
@@ -15,7 +15,7 @@ void ConnectFourBoard::placeInColumn(std::size_t j, char placed)
 
 bool ConnectFourBoard::columnFull(std::size_t j)
 {
-	for (std::size_t i_plus = m_height; i_plus > 0; i_plus--)
+	for (std::size_t i_plus = height(); i_plus > 0; i_plus--)
 	{
 		std::size_t i = i_plus - 1;
 		if (getFromSquare(i, j) == '_') { return false; }

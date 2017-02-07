@@ -41,21 +41,20 @@ class RectGameBoard
 {
 public:
 	RectGameBoard(std::size_t width, std::size_t height);
+	std::size_t width() { return boardContents.shape()[1]; }
+	std::size_t height() { return boardContents.shape()[0]; }
 	void placeInSquare(std::size_t i, std::size_t j, char placed);
 	char getFromSquare(size_t i, size_t j)
 	{
-		if (i < m_height && j < m_width) { return boardContents[i][j]; } return '_';
+		if (i < height() && j < width()) { return boardContents[i][j]; } return '_';
 	}
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
 	bool find_ina_row(std::size_t inarow);
 	virtual bool victoryReached() = 0;
 	virtual bool gameTied() = 0;
 	char currPlayer() { return getFromSquare(lastPlacedRow, lastPlacedCol); }
-	bool noPlaysYet() { return (lastPlacedRow == m_height || lastPlacedCol == m_width); }
-	std::size_t width() { return m_width; }
-	std::size_t height() { return m_height; }
+	bool noPlaysYet() { return (lastPlacedRow == height() || lastPlacedCol == width()); }
 protected:
-	const std::size_t m_width, m_height;
 	boost::multi_array<char, 2> boardContents;
 	std::size_t lastPlacedRow, lastPlacedCol;
 
