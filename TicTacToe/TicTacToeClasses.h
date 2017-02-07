@@ -6,7 +6,7 @@ class TicTacToeBoard : public RectGameBoard
 {
 public:
 	TicTacToeBoard(std::size_t dimension = 3) : RectGameBoard(dimension, dimension), m_dimension(dimension) {}
-	bool victoryReached() override { return find_ina_row(3); }
+	bool victoryReached() override { return find_ina_row(m_dimension); }
 	bool gameTied() override;
 	std::size_t size() { return m_dimension; }
 private:
