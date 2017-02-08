@@ -9,7 +9,7 @@ std::string getPlayerName(std::istream &inRead)
 	return pName;
 }
 
-void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, char *shortsList)
+void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, const char *shortsList)
 {
 	std::size_t i = 0;
 	for (auto &e : playerList)
@@ -21,7 +21,7 @@ void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, s
 	}
 }
 
-RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :lastPlacedRow(height), lastPlacedCol(width), 
+RectGameBoard::RectGameBoard(const std::size_t width, const std::size_t height) :lastPlacedRow(height), lastPlacedCol(width), 
 	                                                                 boardContents(boost::multi_array<char, 2>{boost::extents[height][width]})
 {
 	for (auto &e : boardContents) {
@@ -29,7 +29,7 @@ RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :lastPlacedR
 	}
 }
 
-void RectGameBoard::placeInSquare(std::size_t i, std::size_t j, char placed)
+void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, const char placed)
 {
 	if ((placed == 'X' || placed == 'O') && i < height() && j < width())
 	{
@@ -49,7 +49,7 @@ std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 	return out;
 }
 
-bool RectGameBoard::find_ina_row(std::size_t inarow)
+bool RectGameBoard::find_ina_row(const std::size_t inarow)
 {
 	std::vector<char> directions{ 'h','v','d','a' };
 	array_2d_iterator<char> the_begin = two_d_begin(boardContents);

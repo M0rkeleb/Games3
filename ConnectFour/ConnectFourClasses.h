@@ -7,9 +7,9 @@
 class ConnectFourBoard : public RectGameBoard
 {
 public:
-	ConnectFourBoard(std::size_t width = 7, std::size_t height = 6) : RectGameBoard(width, height) {}
-	void placeInColumn(std::size_t j, char placed);
-	bool columnFull(std::size_t j);
+	ConnectFourBoard(const std::size_t width = 7, const std::size_t height = 6) : RectGameBoard(width, height) {}
+	void placeInColumn(const std::size_t j, const char placed);
+	bool columnFull(const std::size_t j);
 	bool victoryReached() override { return find_ina_row(4); }
 	bool gameTied() override;
 private:
@@ -19,9 +19,9 @@ private:
 class ConnectFourGame : public RectGame
 {
 public:
-	ConnectFourGame(std::size_t width = 7, std::size_t height = 6) { m_board = std::make_unique<ConnectFourBoard>(width, height); }
+	ConnectFourGame(const std::size_t width = 7, const std::size_t height = 6) { m_board = std::make_unique<ConnectFourBoard>(width, height); }
 	void playTurn() override;
-	bool validLocInput(std::size_t userInput) { return (userInput >= 1 && userInput <= m_board->width()); }
+	bool validLocInput(const std::size_t userInput) { return (userInput >= 1 && userInput <= m_board->width()); }
 private:
 
 };

@@ -3,7 +3,7 @@
 #include "gameutils.h"
 #include <iostream>
 
-void ConnectFourBoard::placeInColumn(std::size_t j, char placed)
+void ConnectFourBoard::placeInColumn(const std::size_t j, const char placed)
 {
 	for (std::size_t i_plus = height(); i_plus > 0; i_plus--)
 	{
@@ -13,7 +13,7 @@ void ConnectFourBoard::placeInColumn(std::size_t j, char placed)
 	return;
 }
 
-bool ConnectFourBoard::columnFull(std::size_t j)
+bool ConnectFourBoard::columnFull(const std::size_t j)
 {
 	for (std::size_t i_plus = height(); i_plus > 0; i_plus--)
 	{

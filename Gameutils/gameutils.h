@@ -15,7 +15,7 @@ struct GamePlayer
 	char playerIdentShort;
 };
 
-void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, char *shortsList);
+void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, const char *shortsList);
 
 template <typename T, typename F, typename Z>
 T getInput(std::istream &inRead, std::ostream &outRead, std::string prompt, T &userInput, F valFcn, Z usingClass)
@@ -41,16 +41,16 @@ T getInput(std::istream &inRead, std::ostream &outRead, std::string prompt, T &u
 class RectGameBoard
 {
 public:
-	RectGameBoard(std::size_t width, std::size_t height);
+	RectGameBoard(const std::size_t width, const std::size_t height);
 	std::size_t width() { return boardContents.shape()[1]; }
 	std::size_t height() { return boardContents.shape()[0]; }
-	void placeInSquare(std::size_t i, std::size_t j, char placed);
-	char getFromSquare(size_t i, size_t j)
+	void placeInSquare(const std::size_t i, const std::size_t j, const char placed);
+	char getFromSquare(const size_t i, const size_t j)
 	{
 		if (i < height() && j < width()) { return boardContents[i][j]; } return '_';
 	}
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
-	bool find_ina_row(std::size_t inarow);
+	bool find_ina_row(const std::size_t inarow);
 	virtual bool victoryReached() = 0;
 	virtual bool gameTied() = 0;
 	char currPlayer() { return getFromSquare(lastPlacedRow, lastPlacedCol); }
