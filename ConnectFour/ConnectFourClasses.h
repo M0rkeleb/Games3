@@ -19,7 +19,7 @@ private:
 class ConnectFourGame : public RectGame
 {
 public:
-	ConnectFourGame(std::size_t width = 7, std::size_t height = 6) { m_board = new ConnectFourBoard(width, height); }
+	ConnectFourGame(std::size_t width = 7, std::size_t height = 6) { m_board = std::make_unique<ConnectFourBoard>(width, height); }
 	void playTurn() override;
 	bool validLocInput(std::size_t userInput) { return (userInput >= 1 && userInput <= m_board->width()); }
 private:

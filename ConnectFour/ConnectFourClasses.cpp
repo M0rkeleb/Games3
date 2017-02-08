@@ -41,9 +41,9 @@ void ConnectFourGame::playTurn()
 	{
 		std::cout << playerFromIdent(nextPlacedIdent()) << ", choose a column to place an " << nextPlacedIdent() << " in." << std::endl;
 		playCol = getInput(std::cin, std::cout, "Choose a column. ", playCol, &ConnectFourGame::validLocInput, this);
-		if (!(static_cast<ConnectFourBoard*>(m_board)->columnFull(playCol - 1))) 
+		if (!(static_cast<ConnectFourBoard*>(m_board.get())->columnFull(playCol - 1))) 
 		{ 
-			static_cast<ConnectFourBoard*>(m_board)->placeInColumn(playCol - 1, nextPlacedIdent()); return; 
+			static_cast<ConnectFourBoard*>(m_board.get())->placeInColumn(playCol - 1, nextPlacedIdent()); return; 
 		}
 		std::cout << "That column is already full. You cannot place there." << std::endl;
 	}

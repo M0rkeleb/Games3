@@ -5,21 +5,20 @@
 class TicTacToeBoard : public RectGameBoard
 {
 public:
-	TicTacToeBoard(std::size_t dimension = 3) : RectGameBoard(dimension, dimension), m_dimension(dimension) {}
-	bool victoryReached() override { return find_ina_row(m_dimension); }
+	TicTacToeBoard(std::size_t dimension = 3) : RectGameBoard(dimension, dimension) {}
+	std::size_t size() { return this->height(); }
+	bool victoryReached() override { return find_ina_row(this->size()); }
 	bool gameTied() override;
-	std::size_t size() { return m_dimension; }
 private:
-	const std::size_t m_dimension;
 
 };
 
 class TicTacToeGame : public RectGame
 {
 public:
-	TicTacToeGame(std::size_t dimension = 3) { m_board = new TicTacToeBoard(dimension); }
+	TicTacToeGame(std::size_t dimension = 3) { m_board = std::make_unique<TicTacToeBoard>(dimension); }
 	void playTurn() override;
-	bool validLocInput(std::size_t userInput) { return (userInput >= 1 && userInput <= static_cast<TicTacToeBoard*>(m_board)->size()); }
+	bool validLocInput(std::size_t userInput) { return (userInput >= 1 && userInput <= static_cast<TicTacToeBoard*>(m_board.get())->size()); }
 private:
 
 };

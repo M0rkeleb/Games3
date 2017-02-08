@@ -3,6 +3,7 @@
 #include <array_2d_iterator.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 
 std::string getPlayerName(std::istream &inRead);
 
@@ -65,14 +66,13 @@ class RectGame
 {
 public:
 	RectGame();
-	~RectGame();
 	bool checkEnding();
 	std::string playerFromIdent(char ident);
 	virtual void playTurn() = 0;
 	char nextPlacedIdent();
 	void playGame();
 protected:
-	RectGameBoard* m_board;
+	std::unique_ptr<RectGameBoard> m_board;
 	std::vector<GamePlayer> m_playerNameList;
 };
 

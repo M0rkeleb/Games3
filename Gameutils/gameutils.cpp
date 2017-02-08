@@ -76,11 +76,6 @@ RectGame::RectGame()
 	initPlayerList(m_playerNameList, std::cin, std::cout, tttIdents);
 }
 
-RectGame::~RectGame()
-{
-	delete m_board;
-}
-
 bool RectGame::checkEnding()
 {
 	//Check if the game is over and print result.
