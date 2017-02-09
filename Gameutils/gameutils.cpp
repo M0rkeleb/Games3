@@ -52,12 +52,12 @@ std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 bool RectGameBoard::find_ina_row(const std::size_t inarow)
 {
 	std::vector<char> directions{ 'h','v','d','a' };
-	array_2d_iterator<char> the_begin = two_d_begin(boardContents);
-	array_2d_iterator<char> the_end = two_d_end(boardContents);
+	auto the_begin = two_d_begin(boardContents);
+	auto the_end = two_d_end(boardContents);
 	for (auto dir: directions)
 	{
-		array_2d_iterator<char> itf = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
-		array_2d_iterator<char> itr = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		auto itf = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		auto itr = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
 		for (std::size_t i = 0; i < std::max(height(), width()); i++)
 		{
 			if (itf != the_end && *itf == currPlayer()) { itf++; }
