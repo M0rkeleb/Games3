@@ -3,7 +3,7 @@
 #include "gameutils.h"
 #include <iostream>
 
-bool TicTacToeBoard::gameTied()
+bool TicTacToeBoard::gameTied() const
 {
 	for (auto e : boardContents)
 	{

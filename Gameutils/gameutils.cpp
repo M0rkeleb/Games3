@@ -76,7 +76,7 @@ RectGame::RectGame()
 	initPlayerList(m_playerNameList, std::cin, std::cout, tttIdents);
 }
 
-bool RectGame::checkEnding()
+bool RectGame::checkEnding() const
 {
 	//Check if the game is over and print result.
 	//First check for a win.
@@ -94,13 +94,13 @@ bool RectGame::checkEnding()
 	return false;
 }
 
-std::string RectGame::playerFromIdent(char ident)
+std::string RectGame::playerFromIdent(char ident) const
 {
 	for (auto e : m_playerNameList) if (ident == e.playerIdentShort) return e.playerName;
 	return std::string();
 }
 
-char RectGame::nextPlacedIdent()
+char RectGame::nextPlacedIdent() const
 {
 	if (m_board->noPlaysYet()) { return 'X'; }
 	if (m_board->currPlayer() == 'X') { return 'O'; }

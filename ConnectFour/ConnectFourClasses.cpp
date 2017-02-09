@@ -13,7 +13,7 @@ void ConnectFourBoard::placeInColumn(const std::size_t j, const char placed)
 	return;
 }
 
-bool ConnectFourBoard::columnFull(const std::size_t j)
+bool ConnectFourBoard::columnFull(const std::size_t j) const
 {
 	for (std::size_t i_plus = height(); i_plus > 0; i_plus--)
 	{
@@ -23,7 +23,7 @@ bool ConnectFourBoard::columnFull(const std::size_t j)
 	return true;
 }
 
-bool ConnectFourBoard::gameTied()
+bool ConnectFourBoard::gameTied() const
 {
 	for (auto e : boardContents)
 	{
