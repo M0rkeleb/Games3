@@ -3,27 +3,27 @@
 #include "gameutils.h"
 #include <iostream>
 
-void ConnectFourBoard::placeInColumn(std::size_t j, char placed)
+void ConnectFourBoard::placeInColumn(const std::size_t j, const char placed)
 {
-	for (std::size_t i_plus = m_height; i_plus > 0; i_plus--)
+	for (auto i_plus = height(); i_plus > 0; i_plus--)
 	{
-		std::size_t i = i_plus - 1;
+		auto i = i_plus - 1;
 		if (getFromSquare(i, j) == '_') { placeInSquare(i, j, placed); return; }
 	}
 	return;
 }
 
-bool ConnectFourBoard::columnFull(std::size_t j)
+bool ConnectFourBoard::columnFull(const std::size_t j) const
 {
-	for (std::size_t i_plus = m_height; i_plus > 0; i_plus--)
+	for (auto i_plus = height(); i_plus > 0; i_plus--)
 	{
-		std::size_t i = i_plus - 1;
+		auto i = i_plus - 1;
 		if (getFromSquare(i, j) == '_') { return false; }
 	}
 	return true;
 }
 
-bool ConnectFourBoard::gameTied()
+bool ConnectFourBoard::gameTied() const
 {
 	for (auto e : boardContents)
 	{
@@ -41,9 +41,9 @@ void ConnectFourGame::playTurn()
 	{
 		std::cout << playerFromIdent(nextPlacedIdent()) << ", choose a column to place an " << nextPlacedIdent() << " in." << std::endl;
 		playCol = getInput(std::cin, std::cout, "Choose a column. ", playCol, &ConnectFourGame::validLocInput, this);
-		if (!(static_cast<ConnectFourBoard*>(m_board)->columnFull(playCol - 1))) 
+		if (!(static_cast<ConnectFourBoard*>(m_board.get())->columnFull(playCol - 1))) 
 		{ 
-			static_cast<ConnectFourBoard*>(m_board)->placeInColumn(playCol - 1, nextPlacedIdent()); return; 
+			static_cast<ConnectFourBoard*>(m_board.get())->placeInColumn(playCol - 1, nextPlacedIdent()); return; 
 		}
 		std::cout << "That column is already full. You cannot place there." << std::endl;
 	}

@@ -9,7 +9,7 @@ std::string getPlayerName(std::istream &inRead)
 	return pName;
 }
 
-void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, char *shortsList)
+void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, const char *shortsList)
 {
 	std::size_t i = 0;
 	for (auto &e : playerList)
@@ -21,8 +21,7 @@ void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, s
 	}
 }
 
-RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(width), m_height(height), 
-                                                                     lastPlacedRow(height), lastPlacedCol(width), 
+RectGameBoard::RectGameBoard(const std::size_t width, const std::size_t height) :lastPlacedRow(height), lastPlacedCol(width), 
 	                                                                 boardContents(boost::multi_array<char, 2>{boost::extents[height][width]})
 {
 	for (auto &e : boardContents) {
@@ -30,9 +29,9 @@ RectGameBoard::RectGameBoard(std::size_t width, std::size_t height) :m_width(wid
 	}
 }
 
-void RectGameBoard::placeInSquare(std::size_t i, std::size_t j, char placed)
+void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, const char placed)
 {
-	if ((placed == 'X' || placed == 'O') && i < m_height && j < m_width)
+	if ((placed == 'X' || placed == 'O') && i < height() && j < width())
 	{
 		boardContents[i][j] = placed;
 		lastPlacedRow = i;
@@ -50,21 +49,21 @@ std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 	return out;
 }
 
-bool RectGameBoard::find_ina_row(std::size_t inarow)
+bool RectGameBoard::find_ina_row(const std::size_t inarow)
 {
 	std::vector<char> directions{ 'h','v','d','a' };
-	array_2d_iterator<char> the_begin = two_d_begin(boardContents);
-	array_2d_iterator<char> the_end = two_d_end(boardContents);
+	auto the_begin = two_d_begin(boardContents);
+	auto the_end = two_d_end(boardContents);
 	for (auto dir: directions)
 	{
-		array_2d_iterator<char> itf = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
-		array_2d_iterator<char> itr = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
-		for (std::size_t i = 0; i < std::max(m_height, m_width); i++)
+		auto itf = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		auto itr = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		for (std::size_t i = 0; i < std::max(height(), width()); i++)
 		{
 			if (itf != the_end && *itf == currPlayer()) { itf++; }
 			if (itr != the_begin && *itr == currPlayer()) { itr--; }
 		}
-		if ((*itf == currPlayer() ? 1 : 0) + (*itr == currPlayer() ? 1 : 0) + (itf - itr) >= inarow + 1) { return true; }
+		if ((*itf == currPlayer() ? 1 : 0) + (*itr == currPlayer() ? 1 : 0) + (std::size_t)(itf - itr) >= inarow + 1) { return true; }
 	}
 	return false;
 }
@@ -77,12 +76,7 @@ RectGame::RectGame()
 	initPlayerList(m_playerNameList, std::cin, std::cout, tttIdents);
 }
 
-RectGame::~RectGame()
-{
-	delete m_board;
-}
-
-bool RectGame::checkEnding()
+bool RectGame::checkEnding() const
 {
 	//Check if the game is over and print result.
 	//First check for a win.
@@ -100,13 +94,13 @@ bool RectGame::checkEnding()
 	return false;
 }
 
-std::string RectGame::playerFromIdent(char ident)
+std::string RectGame::playerFromIdent(char ident) const
 {
 	for (auto e : m_playerNameList) if (ident == e.playerIdentShort) return e.playerName;
 	return std::string();
 }
 
-char RectGame::nextPlacedIdent()
+char RectGame::nextPlacedIdent() const
 {
 	if (m_board->noPlaysYet()) { return 'X'; }
 	if (m_board->currPlayer() == 'X') { return 'O'; }

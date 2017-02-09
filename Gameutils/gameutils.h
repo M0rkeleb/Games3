@@ -3,6 +3,7 @@
 #include <array_2d_iterator.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 
 std::string getPlayerName(std::istream &inRead);
 
@@ -14,7 +15,7 @@ struct GamePlayer
 	char playerIdentShort;
 };
 
-void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, char *shortsList);
+void initPlayerList(std::vector<GamePlayer> &playerList, std::istream &inRead, std::ostream &outRead, const char *shortsList);
 
 template <typename T, typename F, typename Z>
 T getInput(std::istream &inRead, std::ostream &outRead, std::string prompt, T &userInput, F valFcn, Z usingClass)
@@ -40,22 +41,21 @@ T getInput(std::istream &inRead, std::ostream &outRead, std::string prompt, T &u
 class RectGameBoard
 {
 public:
-	RectGameBoard(std::size_t width, std::size_t height);
-	void placeInSquare(std::size_t i, std::size_t j, char placed);
-	char getFromSquare(size_t i, size_t j)
+	RectGameBoard(const std::size_t width, const std::size_t height);
+	std::size_t width() const { return boardContents.shape()[1]; }
+	std::size_t height() const { return boardContents.shape()[0]; }
+	void placeInSquare(const std::size_t i, const std::size_t j, const char placed);
+	char getFromSquare(const size_t i, const size_t j) const
 	{
-		if (i < m_height && j < m_width) { return boardContents[i][j]; } return '_';
+		if (i < height() && j < width()) { return boardContents[i][j]; } return '_';
 	}
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
-	bool find_ina_row(std::size_t inarow);
+	bool find_ina_row(const std::size_t inarow);
 	virtual bool victoryReached() = 0;
-	virtual bool gameTied() = 0;
-	char currPlayer() { return getFromSquare(lastPlacedRow, lastPlacedCol); }
-	bool noPlaysYet() { return (lastPlacedRow == m_height || lastPlacedCol == m_width); }
-	std::size_t width() { return m_width; }
-	std::size_t height() { return m_height; }
+	virtual bool gameTied() const = 0;
+	char currPlayer() const { return getFromSquare(lastPlacedRow, lastPlacedCol); }
+	bool noPlaysYet() const { return (lastPlacedRow == height() || lastPlacedCol == width()); }
 protected:
-	const std::size_t m_width, m_height;
 	boost::multi_array<char, 2> boardContents;
 	std::size_t lastPlacedRow, lastPlacedCol;
 
@@ -66,14 +66,13 @@ class RectGame
 {
 public:
 	RectGame();
-	~RectGame();
-	bool checkEnding();
-	std::string playerFromIdent(char ident);
+	bool checkEnding() const;
+	std::string playerFromIdent(char ident) const;
 	virtual void playTurn() = 0;
-	char nextPlacedIdent();
+	char nextPlacedIdent() const;
 	void playGame();
 protected:
-	RectGameBoard* m_board;
+	std::unique_ptr<RectGameBoard> m_board;
 	std::vector<GamePlayer> m_playerNameList;
 };
 
