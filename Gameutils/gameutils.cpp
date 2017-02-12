@@ -49,15 +49,15 @@ std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 	return out;
 }
 
-bool RectGameBoard::find_ina_row(const std::size_t inarow)
+bool RectGameBoard::find_ina_row(const std::size_t inarow) const
 {
 	std::vector<char> directions{ 'h','v','d','a' };
-	auto the_begin = two_d_begin(boardContents);
-	auto the_end = two_d_end(boardContents);
+	auto the_begin = ctwo_d_begin(boardContents);
+	auto the_end = ctwo_d_end(boardContents);
 	for (auto dir: directions)
 	{
-		auto itf = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
-		auto itr = iter_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		auto itf = citer_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
+		auto itr = citer_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
 		for (std::size_t i = 0; i < std::max(height(), width()); i++)
 		{
 			if (itf != the_end && *itf == currPlayer()) { itf++; }
