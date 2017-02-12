@@ -50,8 +50,8 @@ public:
 		if (i < height() && j < width()) { return boardContents[i][j]; } return '_';
 	}
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
-	bool find_ina_row(const std::size_t inarow);
-	virtual bool victoryReached() = 0;
+	bool find_ina_row(const std::size_t inarow) const;
+	virtual bool victoryReached() const = 0;
 	virtual bool gameTied() const = 0;
 	char currPlayer() const { return getFromSquare(lastPlacedRow, lastPlacedCol); }
 	bool noPlaysYet() const { return (lastPlacedRow == height() || lastPlacedCol == width()); }
