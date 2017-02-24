@@ -1,6 +1,7 @@
 #include "gameutils.h"
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 std::string getPlayerName(std::istream &inRead)
 {
@@ -57,13 +58,9 @@ bool RectGameBoard::find_ina_row(const std::size_t inarow) const
 	for (auto dir: directions)
 	{
 		auto itf = citer_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
-		auto itr = citer_from_coord(boardContents, lastPlacedRow, lastPlacedCol, dir);
-		for (std::size_t i = 0; i < std::max(height(), width()); i++)
-		{
-			if (itf != the_end && *itf == currPlayer()) { itf++; }
-			if (itr != the_begin && *itr == currPlayer()) { itr--; }
-		}
-		if ((*itf == currPlayer() ? 1 : 0) + (*itr == currPlayer() ? 1 : 0) + (std::size_t)(itf - itr) >= inarow + 1) { return true; }
+		while (itf != the_begin) { itf--; }
+		auto pos = std::search_n(itf, the_end, inarow, currPlayer());
+		if (pos != the_end) { return true; }
 	}
 	return false;
 }
