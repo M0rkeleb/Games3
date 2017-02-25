@@ -5,22 +5,17 @@
 
 void ConnectFourBoard::placeInColumn(const std::size_t j, const char placed)
 {
-	for (auto i_plus = height(); i_plus > 0; i_plus--)
+	for (auto i = height(); i > 0; )
 	{
-		auto i = i_plus - 1;
-		if (getFromSquare(i, j) == '_') { placeInSquare(i, j, placed); return; }
+		if (getFromSquare(--i, j) == '_') { placeInSquare(i, j, placed); return; }
 	}
 	return;
 }
 
 bool ConnectFourBoard::columnFull(const std::size_t j) const
 {
-	for (auto i_plus = height(); i_plus > 0; i_plus--)
-	{
-		auto i = i_plus - 1;
-		if (getFromSquare(i, j) == '_') { return false; }
-	}
-	return true;
+	//Since we fill from the bottom up we only need to check the top row
+	return (getFromSquare(0, j) != '_');
 }
 
 bool ConnectFourBoard::gameTied() const
