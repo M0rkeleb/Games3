@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "3MensMorrisClasses.h"
-#include "gameutils.h"
 #include <iostream>
 
 bool ThrMenMorBoard::gameTied() const

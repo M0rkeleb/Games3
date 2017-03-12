@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include "gameutils.h"
+#include <string>
 
 const std::size_t morris_size = 3;
 

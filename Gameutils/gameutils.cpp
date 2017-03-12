@@ -1,7 +1,6 @@
 #include "gameutils.h"
 #include <string>
 #include <iostream>
-#include <algorithm>
 
 std::string getPlayerName(std::istream &inRead)
 {
@@ -41,13 +40,13 @@ void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, cons
 }
 
 template<bool const_fl, bool rev_fl>
-void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const_fl, bool_fl>& iter, const char placed)
+void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const_fl, rev_fl>& iter, const char placed)
 {
 	placeInSquare(iter.get_loc().first, iter.get_loc().second, placed);
 }
 
 template<bool const_fl, bool rev_fl>
-void RectGameBoard::moveFromSquarePlus(gen_array_2d_iterator<char, const_fl, bool_fl>& iter)
+void RectGameBoard::moveFromSquarePlus(gen_array_2d_iterator<char, const_fl, rev_fl>& iter)
 {
 	char to_place = *iter;
 	placeInSquare(iter, '_');
@@ -55,7 +54,7 @@ void RectGameBoard::moveFromSquarePlus(gen_array_2d_iterator<char, const_fl, boo
 }
 
 template<bool const_fl, bool rev_fl>
-void RectGameBoard::moveFromSquareMinus(gen_array_2d_iterator<char, const_fl, bool_fl>& iter)
+void RectGameBoard::moveFromSquareMinus(gen_array_2d_iterator<char, const_fl, rev_fl>& iter)
 {
 	char to_place = *iter;
 	placeInSquare(iter, '_');
