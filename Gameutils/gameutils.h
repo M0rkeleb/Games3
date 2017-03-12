@@ -45,12 +45,18 @@ public:
 	std::size_t width() const { return boardContents.shape()[1]; }
 	std::size_t height() const { return boardContents.shape()[0]; }
 	void placeInSquare(const std::size_t i, const std::size_t j, const char placed);
+	template<bool const_fl, bool rev_fl>
+	void placeInSquare(const gen_array_2d_iterator<char, const_fl, bool_fl> & iter, const char placed);
 	char getFromSquare(const size_t i, const size_t j) const
 	{
 		if (i < height() && j < width()) { return boardContents[i][j]; } return '_';
 	}
+	template<bool const_fl, bool rev_fl>
+	void moveFromSquarePlus(gen_array_2d_iterator<char, const_fl, bool_fl> & iter);
+	template<bool const_fl, bool rev_fl>
+	void moveFromSquareMinus(gen_array_2d_iterator<char, const_fl, bool_fl> & iter);
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
-	bool find_ina_row(const std::size_t inarow) const;
+	bool find_ina_row(const std::size_t inarow, const std::vector<char> & dir_whitelist = std::vector<char>{}) const;
 	virtual bool victoryReached() const = 0;
 	virtual bool gameTied() const = 0;
 	char currPlayer() const { return getFromSquare(lastPlacedRow, lastPlacedCol); }
@@ -75,4 +81,3 @@ protected:
 	std::unique_ptr<RectGameBoard> m_board;
 	std::vector<GamePlayer> m_playerNameList;
 };
-

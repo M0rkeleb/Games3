@@ -40,6 +40,28 @@ void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, cons
 	}
 }
 
+template<bool const_fl, bool rev_fl>
+void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const_fl, bool_fl>& iter, const char placed)
+{
+	placeInSquare(iter.get_loc().first, iter.get_loc().second, placed);
+}
+
+template<bool const_fl, bool rev_fl>
+void RectGameBoard::moveFromSquarePlus(gen_array_2d_iterator<char, const_fl, bool_fl>& iter)
+{
+	char to_place = *iter;
+	placeInSquare(iter, '_');
+	placeInSquare(++iter, to_place);
+}
+
+template<bool const_fl, bool rev_fl>
+void RectGameBoard::moveFromSquareMinus(gen_array_2d_iterator<char, const_fl, bool_fl>& iter)
+{
+	char to_place = *iter;
+	placeInSquare(iter, '_');
+	placeInSquare(--iter, to_place);
+}
+
 std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 {
 	for (auto e : rgBoard.boardContents)
@@ -50,9 +72,14 @@ std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 	return out;
 }
 
-bool RectGameBoard::find_ina_row(const std::size_t inarow) const
+bool RectGameBoard::find_ina_row(const std::size_t inarow, const std::vector<char> & dir_whitelist) const
 {
 	std::vector<char> directions{ 'h','v','d','a' };
+	if (!dir_whitelist.empty()) {
+		auto limit = std::remove_if(directions.begin(), directions.end(), 
+			                        [dir_whitelist](char dir) {return std::count(dir_whitelist.cbegin(), dir_whitelist.cend(), dir) > 0; });
+		directions.erase(limit, directions.end());
+	}
 	auto the_begin = ctwo_d_begin(boardContents);
 	auto the_end = ctwo_d_end(boardContents);
 	for (auto dir: directions)
