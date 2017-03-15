@@ -45,20 +45,21 @@ void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const_fl, re
 	placeInSquare(iter.get_loc().first, iter.get_loc().second, placed);
 }
 
-template<bool const_fl, bool rev_fl>
-void RectGameBoard::moveFromSquarePlus(gen_array_2d_iterator<char, const_fl, rev_fl>& iter)
+void RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
 {
-	char to_place = *iter;
-	placeInSquare(iter, '_');
-	placeInSquare(++iter, to_place);
+	auto mover = iter_from_coord(boardContents, i, i, dir);
+	char to_place = *mover;
+	placeInSquare(mover, '_');
+	placeInSquare(++mover, to_place);
 }
 
 template<bool const_fl, bool rev_fl>
-void RectGameBoard::moveFromSquareMinus(gen_array_2d_iterator<char, const_fl, rev_fl>& iter)
+void RectGameBoard::moveFromSquareMinus(std::size_t i, std::size_t j, char dir)
 {
-	char to_place = *iter;
-	placeInSquare(iter, '_');
-	placeInSquare(--iter, to_place);
+	auto mover = iter_from_coord(boardContents, i, i, dir);
+	char to_place = *mover;
+	placeInSquare(mover, '_');
+	placeInSquare(--mover, to_place);
 }
 
 std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
