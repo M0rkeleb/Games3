@@ -9,7 +9,7 @@ void ThrMenMorGame::playTurn()
 	on_board_count++;
 	while (true)
 	{
-		if (on_board_count < 2 * morris_size)
+		if (on_board_count <= 2 * morris_size)
 		{
 			std::cout << playerFromIdent(nextPlacedIdent()) << ", choose a square to place an " << nextPlacedIdent() << " on." << std::endl;
 			playRow = getInput(std::cin, std::cout, "Choose a row. ", playRow, &ThrMenMorGame::validLocInput, this);
@@ -27,8 +27,8 @@ void ThrMenMorGame::playTurn()
 				move_dir = getInput(std::cin, std::cout, "Choose a direction. Must be one of u,d,r,l. ", move_dir, &ThrMenMorGame::validMoveInput, this);
 				if (move_dir == 'd' && playRow < morris_size) { m_board->moveFromSquarePlus(playRow - 1, playCol - 1, 'v'); return; }
 				if (move_dir == 'u' && playRow > 1)           { m_board->moveFromSquareMinus(playRow - 1, playCol - 1, 'v'); return; }
-				if (move_dir == 'r' && playRow < morris_size) { m_board->moveFromSquarePlus(playRow - 1, playCol - 1, 'h'); return; }
-				if (move_dir == 'l' && playRow < 1)           { m_board->moveFromSquareMinus(playRow - 1, playCol - 1 , 'h'); return; }
+				if (move_dir == 'r' && playCol < morris_size) { m_board->moveFromSquarePlus(playRow - 1, playCol - 1, 'h'); return; }
+				if (move_dir == 'l' && playCol > 1)           { m_board->moveFromSquareMinus(playRow - 1, playCol - 1 , 'h'); return; }
 				std::cout << "You can't move in that direction - it would take you off the board.\n";
 			}
 			else { std::cout << "You don't have a piece on that square.\n"; }

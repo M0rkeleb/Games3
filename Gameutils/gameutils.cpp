@@ -31,7 +31,7 @@ RectGameBoard::RectGameBoard(const std::size_t width, const std::size_t height) 
 
 void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, const char placed)
 {
-	if ((placed == 'X' || placed == 'O') && i < height() && j < width())
+	if ((placed == 'X' || placed == 'O' || placed == '_') && i < height() && j < width())
 	{
 		boardContents[i][j] = placed;
 		lastPlacedRow = i;
@@ -42,12 +42,12 @@ void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, cons
 template<bool const_fl, bool rev_fl>
 void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const_fl, rev_fl>& iter, const char placed)
 {
-	placeInSquare(iter.get_loc().first, iter.get_loc().second, placed);
+	placeInSquare(iter.get_loc().first - 1, iter.get_loc().second - 1, placed);
 }
 
 void RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
 {
-	auto mover = iter_from_coord(boardContents, i, i, dir);
+	auto mover = iter_from_coord(boardContents, i, j, dir);
 	char to_place = *mover;
 	placeInSquare(mover, '_');
 	placeInSquare(++mover, to_place);
@@ -55,7 +55,7 @@ void RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
 
 void RectGameBoard::moveFromSquareMinus(std::size_t i, std::size_t j, char dir)
 {
-	auto mover = iter_from_coord(boardContents, i, i, dir);
+	auto mover = iter_from_coord(boardContents, i, j, dir);
 	char to_place = *mover;
 	placeInSquare(mover, '_');
 	placeInSquare(--mover, to_place);
