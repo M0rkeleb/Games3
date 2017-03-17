@@ -53,7 +53,6 @@ void RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
 	placeInSquare(++mover, to_place);
 }
 
-template<bool const_fl, bool rev_fl>
 void RectGameBoard::moveFromSquareMinus(std::size_t i, std::size_t j, char dir)
 {
 	auto mover = iter_from_coord(boardContents, i, i, dir);
