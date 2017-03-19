@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <gameutils.h>
 #include "ConnectFourClasses.h"
 
 

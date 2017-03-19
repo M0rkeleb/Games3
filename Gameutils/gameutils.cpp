@@ -1,7 +1,6 @@
 #include "gameutils.h"
 #include <string>
 #include <iostream>
-#include <algorithm>
 
 std::string getPlayerName(std::istream &inRead)
 {
@@ -32,7 +31,7 @@ RectGameBoard::RectGameBoard(const std::size_t width, const std::size_t height) 
 
 void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, const char placed)
 {
-	if ((placed == 'X' || placed == 'O') && i < height() && j < width())
+	if ((placed == 'X' || placed == 'O' || placed == '_') && i < height() && j < width())
 	{
 		boardContents[i][j] = placed;
 		lastPlacedRow = i;
@@ -50,9 +49,14 @@ std::ostream & operator<<(std::ostream & out, const RectGameBoard & rgBoard)
 	return out;
 }
 
-bool RectGameBoard::find_ina_row(const std::size_t inarow) const
+bool RectGameBoard::find_ina_row(const std::size_t inarow, const std::vector<char> & dir_whitelist) const
 {
 	std::vector<char> directions{ 'h','v','d','a' };
+	if (!dir_whitelist.empty()) {
+		auto limit = std::remove_if(directions.begin(), directions.end(), 
+			                        [dir_whitelist](char dir) {return std::count(dir_whitelist.cbegin(), dir_whitelist.cend(), dir) > 0; });
+		directions.erase(limit, directions.end());
+	}
 	auto the_begin = ctwo_d_begin(boardContents);
 	auto the_end = ctwo_d_end(boardContents);
 	for (auto dir: directions)

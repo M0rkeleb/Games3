@@ -1,7 +1,6 @@
 #pragma once
 
 #pragma once
-#include <string>
 #include <gameutils.h>
 
 class ConnectFourBoard : public RectGameBoard

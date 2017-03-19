@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ConnectFourClasses.h"
-#include "gameutils.h"
 #include <iostream>
 
 void ConnectFourBoard::placeInColumn(const std::size_t j, const char placed)
