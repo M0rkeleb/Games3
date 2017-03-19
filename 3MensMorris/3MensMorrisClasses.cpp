@@ -30,7 +30,7 @@ void ThrMenMorGame::playTurn()
 				else if (move_dir == 'u' && playRow > 1)           { success = m_board->moveFromSquarePlus<true>(playRow - 1, playCol - 1, 'v'); }
 				else if (move_dir == 'r' && playCol < morris_size) { success = m_board->moveFromSquarePlus<false>(playRow - 1, playCol - 1, 'h'); }
 				else if (move_dir == 'l' && playCol > 1)           { success = m_board->moveFromSquarePlus<true>(playRow - 1, playCol - 1 , 'h'); }
-				else { std::cout << "You can't move in that direction - it would take you off the board.\n"; return; }
+				else { std::cout << "You can't move in that direction - it would take you off the board.\n"; continue; }
 				if (success) { return; }
 				else { std::cout << "You can't move your piece to a filled square.\n"; }
 			}

@@ -74,9 +74,7 @@ inline void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const
 template<bool rev_fl>
 inline bool RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
 {
-	gen_array_2d_iterator<char, false, rev_fl> mover;
-	if (rev_fl) { auto mover = riter_from_coord(boardContents, i, j); }
-	else { auto mover = iter_from_coord(boardContents, i, j); }
+	gen_array_2d_iterator<char, false, rev_fl> mover(boardContents, i + 1, j + 1, dir);
 	char to_place = *mover;
 	++mover;
 	if (*mover == '_')
