@@ -51,8 +51,8 @@ public:
 	{
 		if (i < height() && j < width()) { return boardContents[i][j]; } return '_';
 	}
-	void moveFromSquarePlus(std::size_t i, std::size_t j, char dir);
-	void moveFromSquareMinus(std::size_t i, std::size_t j, char dir);
+	template<bool rev_fl>
+	bool moveFromSquarePlus(std::size_t i, std::size_t j, char dir);
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
 	bool find_ina_row(const std::size_t inarow, const std::vector<char> & dir_whitelist = std::vector<char>{}) const;
 	virtual bool victoryReached() const = 0;
@@ -64,6 +64,29 @@ protected:
 	std::size_t lastPlacedRow, lastPlacedCol;
 
 };
+
+template<bool const_fl, bool rev_fl>
+inline void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const_fl, rev_fl>& iter, const char placed)
+{
+	placeInSquare(iter.get_loc().first - 1, iter.get_loc().second - 1, placed);
+}
+
+template<bool rev_fl>
+inline bool RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
+{
+	gen_array_2d_iterator<char, false, rev_fl> mover;
+	if (rev_fl) { auto mover = riter_from_coord(boardContents, i, j); }
+	else { auto mover = iter_from_coord(boardContents, i, j); }
+	char to_place = *mover;
+	++mover;
+	if (*mover == '_')
+	{
+		placeInSquare(i, j, '_');
+		placeInSquare(mover, to_place);
+		return true;
+	}
+	return false;
+}
 
 
 class RectGame
