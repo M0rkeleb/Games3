@@ -38,6 +38,7 @@ void ThrMenMorGame::playTurn()
 					std::cerr << exception.what() << '\n';
 				}
 			}
+			else { std::cout << "You don't have a piece on that square.\n"; }
 		}
 	}
 }
