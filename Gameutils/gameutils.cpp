@@ -31,7 +31,8 @@ RectGameBoard::RectGameBoard(const std::size_t width, const std::size_t height) 
 
 void RectGameBoard::placeInSquare(const std::size_t i, const std::size_t j, const char placed)
 {
-	if ((placed == 'X' || placed == 'O' || placed == '_') && i < height() && j < width())
+	if (i >= height() || j >= width()) { throw std::out_of_range("You cannot choose a square off the board."); }
+	if (placed == 'X' || placed == 'O' || placed == '_')
 	{
 		boardContents[i][j] = placed;
 		lastPlacedRow = i;
