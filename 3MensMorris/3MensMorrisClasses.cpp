@@ -7,22 +7,18 @@ void ThrMenMorGame::playTurn()
 	std::size_t playRow, playCol;
 	char move_dir;
 	on_board_count++;
+	bool place_mode = (on_board_count <= 2 * morris_size);
 	while (true)
 	{
-		if (on_board_count <= 2 * morris_size)
+		std::cout << playerFromIdent(nextPlacedIdent()) << ", choose a square to ";
+		std::cout << (place_mode ? "place an " : "move an ") << nextPlacedIdent() << (place_mode ? " on.\n" : " from.\n");
+		playRow = getInput(std::cin, std::cout, "Choose a row. ", playRow, &ThrMenMorGame::validLocInput, this);
+		playCol = getInput(std::cin, std::cout, "Choose a column. ", playCol, &ThrMenMorGame::validLocInput, this);
+		char expected = (place_mode ? '_' : nextPlacedIdent());
+		if (m_board->getFromSquare(playRow - 1, playCol - 1) == expected)
 		{
-			std::cout << playerFromIdent(nextPlacedIdent()) << ", choose a square to place an " << nextPlacedIdent() << " on." << std::endl;
-			playRow = getInput(std::cin, std::cout, "Choose a row. ", playRow, &ThrMenMorGame::validLocInput, this);
-			playCol = getInput(std::cin, std::cout, "Choose a column. ", playCol, &ThrMenMorGame::validLocInput, this);
-			if (m_board->getFromSquare(playRow - 1, playCol - 1) == '_') { m_board->placeInSquare(playRow - 1, playCol - 1, nextPlacedIdent()); return; }
-			std::cout << "That square is already full. You cannot place there." << std::endl;
-	    }
-		else
-		{
-			std::cout << playerFromIdent(nextPlacedIdent()) << ", choose a square to move an " << nextPlacedIdent() << " from." << std::endl;
-			playRow = getInput(std::cin, std::cout, "Choose a row. ", playRow, &ThrMenMorGame::validLocInput, this);
-			playCol = getInput(std::cin, std::cout, "Choose a column. ", playCol, &ThrMenMorGame::validLocInput, this);
-			if (m_board->getFromSquare(playRow - 1, playCol - 1) == nextPlacedIdent())
+			if (place_mode) { m_board->placeInSquare(playRow - 1, playCol - 1, nextPlacedIdent()); return; }
+			else
 			{
 				move_dir = getInput(std::cin, std::cout, "Choose a direction. Must be one of u,d,r,l. ", move_dir, &ThrMenMorGame::validMoveInput, this);
 				try
@@ -38,7 +34,7 @@ void ThrMenMorGame::playTurn()
 					std::cerr << exception.what() << '\n';
 				}
 			}
-			else { std::cout << "You don't have a piece on that square.\n"; }
 		}
+		else { std::cout << (place_mode ? "That square is already full. You cannot place there.\n" : "You don't have a piece on that square.\n"); }
 	}
 }
