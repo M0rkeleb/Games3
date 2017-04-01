@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <exception>
 
 std::string getPlayerName(std::istream &inRead);
 
@@ -49,10 +50,12 @@ public:
 	void placeInSquare(const gen_array_2d_iterator<char, const_fl, rev_fl> & iter, const char placed);
 	char getFromSquare(const size_t i, const size_t j) const
 	{
-		if (i < height() && j < width()) { return boardContents[i][j]; } return '_';
+		if (i < height() && j < width()) { return boardContents[i][j]; } throw std::out_of_range("You cannot choose a square off the board.");
 	}
+	template<bool const_fl, bool rev_fl>
+	char getFromSquare(const gen_array_2d_iterator<char, const_fl, rev_fl> & iter);
 	template<bool rev_fl>
-	bool moveFromSquarePlus(std::size_t i, std::size_t j, char dir);
+	void moveFromSquarePlus(std::size_t i, std::size_t j, char dir);
 	friend std::ostream& operator<< (std::ostream &out, const RectGameBoard &rgBoard);
 	bool find_ina_row(const std::size_t inarow, const std::vector<char> & dir_whitelist = std::vector<char>{}) const;
 	virtual bool victoryReached() const = 0;
@@ -66,24 +69,28 @@ protected:
 };
 
 template<bool const_fl, bool rev_fl>
+inline char RectGameBoard::getFromSquare(const gen_array_2d_iterator<char, const_fl, rev_fl>& iter)
+{
+	if (iter.get_loc().first == 0 || iter.get_loc().second == 0) { throw std::out_of_range("You cannot choose a square off the board."); }
+	return getFromSquare(iter.get_loc().first - 1, iter.get_loc().second - 1);
+}
+
+template<bool const_fl, bool rev_fl>
 inline void RectGameBoard::placeInSquare(const gen_array_2d_iterator<char, const_fl, rev_fl>& iter, const char placed)
 {
+	if (iter.get_loc().first == 0 || iter.get_loc().second == 0) { throw std::out_of_range("You cannot choose a square off the board."); }
 	placeInSquare(iter.get_loc().first - 1, iter.get_loc().second - 1, placed);
 }
 
 template<bool rev_fl>
-inline bool RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
+inline void RectGameBoard::moveFromSquarePlus(std::size_t i, std::size_t j, char dir)
 {
 	gen_array_2d_iterator<char, false, rev_fl> mover(boardContents, i + 1, j + 1, dir);
-	char to_place = *mover;
+	char to_place = getFromSquare(mover);
 	++mover;
-	if (*mover == '_')
-	{
-		placeInSquare(i, j, '_');
-		placeInSquare(mover, to_place);
-		return true;
-	}
-	return false;
+	if (getFromSquare(mover) != '_') { throw std::runtime_error("You cannot move to a filled square."); }
+	placeInSquare(i, j, '_');
+	placeInSquare(mover, to_place);
 }
 
 
